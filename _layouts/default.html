@@ -100,19 +100,38 @@
     </section>
 
     <div class="main-container">
-      <!-- 사이드바: 카테고리 목록 -->
+     <!-- 사이드바: 카테고리 계층 구조 목록 -->
       <aside class="sidebar">
         <h3>카테고리</h3>
-        <ul>
+        <ul style="list-style: none; padding-left: 0;">
           <li><a href="{{ "/" | relative_url }}">전체 보기</a></li>
           {% assign categories_list = site.categories %}
           {% for category in categories_list %}
             {% capture category_name %}{{ category | first }}{% endcapture %}
-            <li>
-              <a href="{{ site.baseurl }}/#category-{{ category_name | slugify }}">
-                {{ category_name }} ({{ category[1].size }})
-              </a>
-            </li>
+            {% comment %} 2번째 순서 이상에 오는 소카테고리는 상위에서 제외 {% endcomment %}
+            {% unless category_name == "미드" or category_name == "한드" or category_name == "일드" or category_name == "중드" %}
+              <li style="margin-top: 0.5rem; font-weight: bold;">
+                <a href="{{ site.baseurl }}/#category-{{ category_name | slugify }}">
+                  📁 {{ category_name }} ({{ category[1].size }})
+                </a>
+                
+                {% comment %} 드라마 아래에 포함될 하위 카테고리 출력 {% endcomment %}
+                {% if category_name == "드라마" %}
+                  <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
+                    {% for sub_cat in site.categories %}
+                      {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
+                      {% if sub_name == "미드" or sub_name == "한드" or sub_name == "일드" or sub_name == "중드" %}
+                        <li style="margin-bottom: 0.2rem;">
+                          <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
+                            └ {{ sub_name }} ({{ sub_cat[1].size }})
+                          </a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endunless %}
           {% endfor %}
         </ul>
       </aside>
