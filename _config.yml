@@ -4,3 +4,5 @@ theme: jekyll-theme-cayman
 
 # 파비콘 설정
 favicon: "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f984.png"
+
+future: true
