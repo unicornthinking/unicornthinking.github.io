@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "블로그를 시작하며"
-date: 2026-09-23
+date: 2026-09-25
 categories: ["일상"]
 ---
 
