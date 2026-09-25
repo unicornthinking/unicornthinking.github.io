@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    {% if site.favicon %}
+    <link rel="icon" href="{{ site.favicon }}" type="image/png">
+    {% endif %}
+
+    <style>
+      /* 2단 레이아웃 스타일 체계 */
+      .page-header {
+        padding: 2.5rem 1rem;
+        background-image: linear-gradient(120deg, #155799, #159957);
+        color: #fff;
+        text-align: center;
+      }
+      .main-container {
+        max-width: 64rem;
+        padding: 2rem 1rem;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+      .sidebar {
+        flex: 1 1 220px;
+        max-width: 260px;
+        background: #f8f9fa;
+        padding: 1.2rem;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        height: fit-content;
+      }
+      .sidebar h3 {
+        margin-top: 0;
+        font-size: 1.1rem;
+        color: #2b3e50;
+        border-bottom: 2px solid #159957;
+        padding-bottom: 0.4rem;
+      }
+      .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+      }
+      .sidebar li {
+        margin-bottom: 0.5rem;
+      }
+      .sidebar a {
+        color: #155799;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .sidebar a:hover {
+        text-decoration: underline;
+      }
+      .content-area {
+        flex: 3 1 400px;
+        min-width: 0;
+      }
+      .post-list {
+        list-style: none;
+        padding: 0;
+      }
+      .post-item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .post-meta {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+      .category-tag {
+        display: inline-block;
+        background: #e9ecef;
+        padding: 0.1rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        color: #495057;
+        margin-left: 0.5rem;
+      }
+      @media (max-width: 768px) {
+        .main-container {
+          flex-direction: column;
+        }
+        .sidebar {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name"><a href="{{ "/" | relative_url }}" style="color: white; text-decoration: none;">{{ site.title }}</a></h1>
+      <h2 class="project-tagline" style="font-weight: normal; font-size: 1.1rem; opacity: 0.9;">{{ site.description }}</h2>
+    </section>
+
+    <div class="main-container">
+      <!-- 사이드바: 카테고리 목록 -->
+      <aside class="sidebar">
+        <h3>카테고리</h3>
+        <ul>
+          <li><a href="{{ "/" | relative_url }}">전체 보기</a></li>
+          {% assign categories_list = site.categories %}
+          {% for category in categories_list %}
+            {% capture category_name %}{{ category | first }}{% endcapture %}
+            <li>
+              <a href="{{ site.baseurl }}/#category-{{ category_name | slugify }}">
+                {{ category_name }} ({{ category[1].size }})
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </aside>
+
+      <!-- 메인 콘텐트 영역 -->
+      <main class="content-area">
+        {{ content }}
+      </main>
+    </div>
+  </body>
+</html>
