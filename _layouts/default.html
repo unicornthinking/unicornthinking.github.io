@@ -131,25 +131,25 @@
                   </ul>
                 {% endif %}
 
-                {% comment %} 음악 아래에 포함될 하위 카테고리 출력 {% endcomment %}
-                {% if category_name == "음악" %}
-                  <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
-                    {% for sub_cat in site.categories %}
-                      {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
-                      {% if sub_name == "CPOP" %}
-                        <li style="margin-bottom: 0.2rem;">
-                          <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
-                            └ {{ sub_name }} ({{ sub_cat[1].size }})
-                          </a>
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
+            
+<!-- 음악 카테고리 고정 출력 영역 -->
+          <li style="margin-top: 0.5rem; font-weight: bold;">
+            <a href="{{ site.baseurl }}/#category-e982bda5">
+              📁 음악
+            </a>
+            <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
+              {% for sub_cat in site.categories %}
+                {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
+                {% if sub_name == "CPOP" %}
+                  <li style="margin-bottom: 0.2rem;">
+                    <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
+                      └ {{ sub_name }} ({{ sub_cat[1].size }})
+                    </a>
+                  </li>
                 {% endif %}
-              </li>
-            {% endunless %}
-          {% endfor %}
-        </ul>
+              {% endfor %}
+            </ul>
+          </li>
       </aside>
 
       <!-- 메인 콘텐트 영역 -->
