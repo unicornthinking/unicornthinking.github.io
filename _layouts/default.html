@@ -111,7 +111,7 @@
             {% capture category_name %}{{ category | first }}{% endcapture %}
             
             {% comment %} 독립된 상위 목록에 뜨면 안 되는 하위/특수 카테고리 필터링 {% endcomment %}
-            {% unless category_name == "미드" or category_name == "한드" or category_name == "일드" or category_name == "중드" or category_name == "CPOP" or category_name == "cpop" or category_name == "음악" %}
+            {% unless category_name == "미드" or category_name == "한드" or category_name == "일드" or category_name == "중드" or category_name == "중음" or category_name == "음악" %}
               <li style="margin-top: 0.5rem; font-weight: bold;">
                 <a href="{{ site.baseurl }}/#category-{{ category_name | slugify }}">
                   📁 {{ category_name }} ({{ category[1].size }})
@@ -132,28 +132,54 @@
                     {% endfor %}
                   </ul>
                 {% endif %}
+
+                {% comment %} 음악 하위 카테고리(중음) 연결 {% endcomment %}
+                {% if category_name == "음악" %}
+                  <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
+                    {% for sub_cat in site.categories %}
+                      {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
+                      {% if sub_name == "중음" %}
+                        <li style="margin-bottom: 0.2rem;">
+                          <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
+                            └ {{ sub_name }} ({{ sub_cat[1].size }})
+                          </a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                {% endif %}
               </li>
             {% endunless %}
           {% endfor %}
 
-          <!-- 음악 카테고리 수동/자동 완벽 연동 블록 -->
-          <li style="margin-top: 0.5rem; font-weight: bold;">
-            <a href="{{ site.baseurl }}/#category-음악">
-              📁 음악
-            </a>
-            <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
-              {% for sub_cat in site.categories %}
-                {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
-                {% if sub_name == "CPOP" or sub_name == "cpop" %}
-                  <li style="margin-bottom: 0.2rem;">
-                    <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
-                      └ {{ sub_name }} ({{ sub_cat[1].size }})
-                    </a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </li>
+          <!-- 만약 '음악' 카테고리로 묶인 글이 사이트 전체에 아직 하나도 없을 때를 대비한 안전 장치 -->
+          {% assign music_exists = false %}
+          {% for category in site.categories %}
+            {% capture cat_n %}{{ category | first }}{% endcapture %}
+            {% if cat_n == "음악" %}
+              {% assign music_exists = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% unless music_exists %}
+            <li style="margin-top: 0.5rem; font-weight: bold;">
+              <a href="{{ site.baseurl }}/#category-음악">
+                📁 음악
+              </a>
+              <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
+                {% for sub_cat in site.categories %}
+                  {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
+                  {% if sub_name == "중음" %}
+                    <li style="margin-bottom: 0.2rem;">
+                      <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
+                        └ {{ sub_name }} ({{ sub_cat[1].size }})
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          {% endunless %}
 
         </ul>
       </aside>
@@ -175,7 +201,7 @@
     (function() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
     s.src = 'https://unicornthinking-github-io.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +endDate());
+    s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
     })();
 </script>
