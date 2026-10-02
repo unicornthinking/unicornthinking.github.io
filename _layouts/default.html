@@ -110,8 +110,8 @@
           {% for category in categories_list %}
             {% capture category_name %}{{ category | first }}{% endcapture %}
             
-            {% comment %} 독립된 상위 목록에 뜨면 안 되는 하위/특수 카테고리 필터링 {% endcomment %}
-            {% unless category_name == "미드" or category_name == "한드" or category_name == "일드" or category_name == "중드" or category_name == "중음" or category_name == "음악" %}
+            {% comment %} 독립된 상위 목록에 단독으로 뜨면 안 되는 하위 카테고리 필터링 {% endcomment %}
+            {% unless category_name == "미드" or category_name == "한드" or category_name == "일드" or category_name == "중드" or category_name == "중음" %}
               <li style="margin-top: 0.5rem; font-weight: bold;">
                 <a href="{{ site.baseurl }}/#category-{{ category_name | slugify }}">
                   📁 {{ category_name }} ({{ category[1].size }})
@@ -151,35 +151,6 @@
               </li>
             {% endunless %}
           {% endfor %}
-
-          <!-- 만약 '음악' 카테고리로 묶인 글이 사이트 전체에 아직 하나도 없을 때를 대비한 안전 장치 -->
-          {% assign music_exists = false %}
-          {% for category in site.categories %}
-            {% capture cat_n %}{{ category | first }}{% endcapture %}
-            {% if cat_n == "음악" %}
-              {% assign music_exists = true %}
-            {% endif %}
-          {% endfor %}
-
-          {% unless music_exists %}
-            <li style="margin-top: 0.5rem; font-weight: bold;">
-              <a href="{{ site.baseurl }}/#category-음악">
-                📁 음악
-              </a>
-              <ul style="list-style: none; padding-left: 1.2rem; margin-top: 0.3rem; font-weight: normal;">
-                {% for sub_cat in site.categories %}
-                  {% capture sub_name %}{{ sub_cat | first }}{% endcapture %}
-                  {% if sub_name == "중음" %}
-                    <li style="margin-bottom: 0.2rem;">
-                      <a href="{{ site.baseurl }}/#category-{{ sub_name | slugify }}" style="font-size: 0.9rem; color: #555;">
-                        └ {{ sub_name }} ({{ sub_cat[1].size }})
-                      </a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </li>
-          {% endunless %}
 
         </ul>
       </aside>
